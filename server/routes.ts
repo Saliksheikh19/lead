@@ -49,6 +49,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get leaderboard entries by partner slug
+  app.get("/api/leaderboards/:partnerSlug", async (req, res) => {
+    try {
+      const entries = await storage.getLeaderboardEntriesByPartner(req.params.partnerSlug);
+      res.json(entries);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch leaderboard entries" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

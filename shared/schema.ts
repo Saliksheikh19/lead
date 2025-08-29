@@ -32,6 +32,18 @@ export const bonuses = pgTable("bonuses", {
   gradientTo: text("gradient_to").notNull(),
 });
 
+export const leaderboardEntries = pgTable("leaderboard_entries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  partnerSlug: text("partner_slug").notNull(),
+  playerName: text("player_name").notNull(),
+  rank: integer("rank").notNull(),
+  score: integer("score").notNull(),
+  prize: text("prize"),
+  avatarUrl: text("avatar_url"),
+  country: text("country"),
+  isWinner: integer("is_winner").notNull().default(0), // 0 = false, 1 = true
+});
+
 export const insertPartnerSchema = createInsertSchema(partners).omit({
   id: true,
 });
@@ -40,7 +52,13 @@ export const insertBonusSchema = createInsertSchema(bonuses).omit({
   id: true,
 });
 
+export const insertLeaderboardEntrySchema = createInsertSchema(leaderboardEntries).omit({
+  id: true,
+});
+
 export type InsertPartner = z.infer<typeof insertPartnerSchema>;
 export type Partner = typeof partners.$inferSelect;
 export type InsertBonus = z.infer<typeof insertBonusSchema>;
 export type Bonus = typeof bonuses.$inferSelect;
+export type InsertLeaderboardEntry = z.infer<typeof insertLeaderboardEntrySchema>;
+export type LeaderboardEntry = typeof leaderboardEntries.$inferSelect;

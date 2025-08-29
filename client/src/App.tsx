@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import Leaderboards from "@/pages/leaderboards";
+import LeaderboardDetail from "@/pages/leaderboard-detail";
 import Rewards from "@/pages/rewards";
 import NotFound from "@/pages/not-found";
 
@@ -13,7 +14,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/leaderboards" component={Leaderboards} />
-      <Route path="/leaderboards/:slug" component={Leaderboards} />
+      <Route path="/leaderboards/:slug" component={LeaderboardDetail} />
       <Route path="/rewards" component={Rewards} />
       <Route component={NotFound} />
     </Switch>

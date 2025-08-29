@@ -26,6 +26,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get all bonuses
+  app.get("/api/bonuses", async (req, res) => {
+    try {
+      const bonuses = await storage.getAllBonuses();
+      res.json(bonuses);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch bonuses" });
+    }
+  });
+
+  // Get bonus by slug
+  app.get("/api/bonuses/:slug", async (req, res) => {
+    try {
+      const bonus = await storage.getBonusBySlug(req.params.slug);
+      if (!bonus) {
+        return res.status(404).json({ message: "Bonus not found" });
+      }
+      res.json(bonus);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch bonus" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

@@ -1,50 +1,55 @@
-import { useQuery } from "@tanstack/react-query";
-import { type Partner } from "@shared/schema";
+import Navbar from "@/components/navbar";
 import Header from "@/components/header";
-import StatsOverview from "@/components/stats-overview";
-import LeaderboardCard from "@/components/leaderboard-card";
 import Footer from "@/components/footer";
 
 export default function Home() {
-  const { data: partners, isLoading } = useQuery<Partner[]>({
-    queryKey: ["/api/partners"],
-  });
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-background-secondary flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading leaderboards...</p>
-        </div>
-      </div>
-    );
-  }
-
-  const totalWinners = partners?.reduce((sum, partner) => sum + partner.winners, 0) || 0;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-background-secondary">
-      <Header />
-      <StatsOverview 
-        activePartners={partners?.length || 0}
-        totalWinners={totalWinners}
-      />
+      <Navbar />
+      <Header variant="home" />
       
-      <main className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {partners?.map((partner, index) => (
-              <LeaderboardCard 
-                key={partner.id} 
-                partner={partner} 
-                index={index}
-                data-testid={`card-leaderboard-${partner.slug}`}
+      {/* Hero Section with CK97 Logo */}
+      <section className="py-16 border-b border-border/50">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-12 animate-slide-up">
+              <img 
+                src="https://images.unsplash.com/photo-1614680376593-902f74cf0d41?ixlib=rb-4.0.3&auto=format&fit=crop&w=828&h=428" 
+                alt="CK97 Logo" 
+                className="mx-auto rounded-2xl shadow-2xl border border-border/50 max-w-full h-auto"
+                data-testid="img-ck97-logo"
               />
-            ))}
+            </div>
+            
+            <div className="space-y-8 animate-slide-up delay-200">
+              <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-8">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent">
+                  Start Your Journey Today
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                  Join the CK97 community and unlock exclusive benefits, bonuses, and compete in exciting leaderboards. 
+                  Your gaming experience is about to get a lot more rewarding!
+                </p>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-secondary/30 rounded-lg p-6 border border-border/30">
+                    <h3 className="text-xl font-semibold mb-3 text-emerald-400">Exclusive Bonuses</h3>
+                    <p className="text-muted-foreground">
+                      Get access to exclusive promo codes and bonuses across multiple gaming platforms
+                    </p>
+                  </div>
+                  <div className="bg-secondary/30 rounded-lg p-6 border border-border/30">
+                    <h3 className="text-xl font-semibold mb-3 text-purple-400">Competitive Leaderboards</h3>
+                    <p className="text-muted-foreground">
+                      Compete with other players and climb the ranks to win amazing prizes
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </main>
+      </section>
 
       <Footer />
     </div>

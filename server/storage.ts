@@ -1,4 +1,4 @@
-import { type Partner, type InsertPartner } from "@shared/schema";
+import { type Partner, type InsertPartner, type Bonus, type InsertBonus } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -6,13 +6,19 @@ export interface IStorage {
   getPartnerBySlug(slug: string): Promise<Partner | undefined>;
   getAllPartners(): Promise<Partner[]>;
   createPartner(partner: InsertPartner): Promise<Partner>;
+  getBonus(id: string): Promise<Bonus | undefined>;
+  getBonusBySlug(slug: string): Promise<Bonus | undefined>;
+  getAllBonuses(): Promise<Bonus[]>;
+  createBonus(bonus: InsertBonus): Promise<Bonus>;
 }
 
 export class MemStorage implements IStorage {
   private partners: Map<string, Partner>;
+  private bonuses: Map<string, Bonus>;
 
   constructor() {
     this.partners = new Map();
+    this.bonuses = new Map();
     this.seedData();
   }
 
@@ -79,6 +85,81 @@ export class MemStorage implements IStorage {
       const partnerWithId: Partner = { ...partner, id };
       this.partners.set(id, partnerWithId);
     });
+
+    const bonusesData: InsertBonus[] = [
+      {
+        name: "Roobet",
+        slug: "roobet",
+        logoUrl: "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=96&h=96",
+        bonusType: "Cashback / Lossback",
+        promoCode: "CK97",
+        claimUrl: "https://roobet.com/?ref=CK97",
+        isFeatured: 1,
+        gradientFrom: "from-primary",
+        gradientTo: "to-purple-600",
+      },
+      {
+        name: "Packdraw",
+        slug: "packdraw",
+        logoUrl: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=96&h=96",
+        bonusType: "5% Deposit Bonus",
+        promoCode: "CK97",
+        claimUrl: "https://packdraw.com/?ref=CK97",
+        isFeatured: 1,
+        gradientFrom: "from-emerald-500",
+        gradientTo: "to-cyan-500",
+      },
+      {
+        name: "Rain.gg",
+        slug: "rain",
+        logoUrl: "https://images.unsplash.com/photo-1528132596460-10deeb5e6064?ixlib=rb-4.0.3&auto=format&fit=crop&w=96&h=96",
+        bonusType: "Get 3 Free Cases + 5% Deposit Bonus",
+        promoCode: "CK97",
+        claimUrl: "https://rain.gg/r/CRZ",
+        isFeatured: 1,
+        gradientFrom: "from-blue-500",
+        gradientTo: "to-indigo-500",
+      },
+      {
+        name: "Clash.gg",
+        slug: "clash",
+        logoUrl: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=96&h=96",
+        bonusType: "5% Deposit Bonus & Daily Cases",
+        promoCode: "CK97",
+        claimUrl: "https://clash.gg/r/CK97",
+        isFeatured: 1,
+        gradientFrom: "from-red-500",
+        gradientTo: "to-pink-500",
+      },
+      {
+        name: "CSGOGem",
+        slug: "csgogem",
+        logoUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=96&h=96",
+        bonusType: "5% Deposit Bonus & Daily Cases",
+        promoCode: "CK97",
+        claimUrl: "https://csgogem.com/r/CK97",
+        isFeatured: 1,
+        gradientFrom: "from-orange-500",
+        gradientTo: "to-red-500",
+      },
+      {
+        name: "Chicken.gg",
+        slug: "chickengg",
+        logoUrl: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=96&h=96",
+        bonusType: "5% Deposit Bonus & Cases",
+        promoCode: "CK97",
+        claimUrl: "https://chicken.gg/r/CK97",
+        isFeatured: 1,
+        gradientFrom: "from-yellow-500",
+        gradientTo: "to-orange-500",
+      },
+    ];
+
+    bonusesData.forEach(bonus => {
+      const id = randomUUID();
+      const bonusWithId: Bonus = { ...bonus, id };
+      this.bonuses.set(id, bonusWithId);
+    });
   }
 
   async getPartner(id: string): Promise<Partner | undefined> {
@@ -100,6 +181,27 @@ export class MemStorage implements IStorage {
     const partner: Partner = { ...insertPartner, id };
     this.partners.set(id, partner);
     return partner;
+  }
+
+  async getBonus(id: string): Promise<Bonus | undefined> {
+    return this.bonuses.get(id);
+  }
+
+  async getBonusBySlug(slug: string): Promise<Bonus | undefined> {
+    return Array.from(this.bonuses.values()).find(
+      (bonus) => bonus.slug === slug,
+    );
+  }
+
+  async getAllBonuses(): Promise<Bonus[]> {
+    return Array.from(this.bonuses.values());
+  }
+
+  async createBonus(insertBonus: InsertBonus): Promise<Bonus> {
+    const id = randomUUID();
+    const bonus: Bonus = { ...insertBonus, id };
+    this.bonuses.set(id, bonus);
+    return bonus;
   }
 }
 

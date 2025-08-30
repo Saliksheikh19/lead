@@ -82,6 +82,19 @@ export class MemStorage implements IStorage {
         gradientTo: "to-orange-500",
         hoverColor: "yellow-400/50",
       },
+      {
+        name: "Rain.gg",
+        slug: "rainbet",
+        description: "Compete in Rain.gg Leaderboard and win exclusive rewards",
+        logoUrl: "https://images.unsplash.com/photo-1528132596460-10deeb5e6064?ixlib=rb-4.0.3&auto=format&fit=crop&w=128&h=128",
+        winners: 15,
+        prizePool: "$2,500",
+        currencyType: "USD",
+        activeUsers: 3892,
+        gradientFrom: "from-blue-500",
+        gradientTo: "to-indigo-600",
+        hoverColor: "blue-400/50",
+      },
     ];
 
     partnersData.forEach(partner => {

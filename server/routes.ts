@@ -52,7 +52,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get leaderboard entries by partner slug
   app.get("/api/leaderboards/:partnerSlug", async (req, res) => {
     try {
-      const entries = await storage.getLeaderboardEntriesByPartner(req.params.partnerSlug);
+      const { partnerSlug } = req.params;
+      
+      // Special handling for Rain Bet - fetch live data
+      if (partnerSlug === "rainbet") {
+        try {
+          const response = await fetch("https://services.rainbet.com/v1/external/affiliates?start_at=2025-03-01&end_at=2025-03-02&key=15DRHDoG9NCbS4TGCgnhoka1ez6fp7Zn");
+          const data = await response.json();
+          
+          if (data.affiliates) {
+            // Transform Rain Bet API data to our leaderboard format
+            const rainBetEntries = data.affiliates.map((affiliate: any, index: number) => ({
+              id: affiliate.id,
+              partnerSlug: "rainbet",
+              playerName: affiliate.username,
+              rank: index + 1,
+              score: Math.floor(parseFloat(affiliate.wagered_amount)),
+              prize: index < 5 ? `$${[500, 300, 200, 150, 100][index]}` : undefined,
+              avatarUrl: `https://images.unsplash.com/photo-${1535713875002 + index}d-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64`,
+              country: ["US", "CA", "UK", "AU", "DE", "FR", "NL", "SE", "NO", "FI"][index % 10],
+              isWinner: index < 15 ? 1 : 0,
+            }));
+            
+            return res.json(rainBetEntries);
+          }
+        } catch (apiError) {
+          console.error("Failed to fetch Rain Bet data:", apiError);
+          // Fall back to stored data if API fails
+        }
+      }
+      
+      // Default behavior for other partners
+      const entries = await storage.getLeaderboardEntriesByPartner(partnerSlug);
       res.json(entries);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch leaderboard entries" });

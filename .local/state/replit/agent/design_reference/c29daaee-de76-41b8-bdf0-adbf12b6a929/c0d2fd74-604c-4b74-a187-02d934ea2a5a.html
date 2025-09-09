@@ -1,0 +1,520 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CK97 Leaderboards - Compete & Win</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    border: "var(--border)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["Inter", "system-ui", "sans-serif"],
+                },
+                animation: {
+                    'glow': 'glow 2s ease-in-out infinite alternate',
+                    'float': 'float 3s ease-in-out infinite',
+                    'slide-up': 'slideUp 0.6s ease-out',
+                    'fade-in': 'fadeIn 0.8s ease-out',
+                }
+            },
+        }
+    };
+    </script>
+    <style>
+        :root {
+            --background: hsl(240 10% 3.9%);
+            --foreground: hsl(0 0% 98%);
+            --card: hsl(240 10% 7%);
+            --card-foreground: hsl(0 0% 95%);
+            --primary: hsl(263 70% 50%);
+            --primary-foreground: hsl(0 0% 98%);
+            --secondary: hsl(240 5% 26%);
+            --secondary-foreground: hsl(0 0% 98%);
+            --muted: hsl(240 5% 26%);
+            --muted-foreground: hsl(240 5% 65%);
+            --accent: hsl(263 70% 50%);
+            --accent-foreground: hsl(0 0% 98%);
+            --border: hsl(240 6% 20%);
+            --ring: hsl(263 70% 50%);
+            --radius: 12px;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.3);
+        }
+
+        .glow-effect {
+            position: relative;
+        }
+
+        .glow-effect::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #8b5cf6, #06d6a0, #f59e0b, #ef4444);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glow-effect:hover::before {
+            opacity: 0.7;
+        }
+
+        .prize-glow {
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+        }
+
+        body {
+            background: linear-gradient(135deg, hsl(240 10% 3.9%) 0%, hsl(260 10% 5%) 100%);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground font-sans">
+    <!-- @COMPONENT: Header -->
+    <header class="relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(6, 214, 160, 0.3) 0%, transparent 50%);"></div>
+        </div>
+        
+        <div class="relative z-10 container mx-auto px-4 py-16 text-center animate-fade-in">
+            <div class="mb-6">
+                <span class="inline-block px-4 py-2 bg-primary/20 border border-primary/30 rounded-full text-sm font-medium text-primary-foreground mb-4 animate-glow">
+                    <i class="fas fa-trophy mr-2"></i>COMPETE & WIN
+                </span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-primary via-accent to-emerald-400 bg-clip-text text-transparent animate-slide-up">
+                CK97Leaderboards
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-slide-up" style="animation-delay: 0.2s;">
+                Challenge yourself against other players, climb the ranks, and win exciting prizes in our competitive leaderboards
+            </p>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: StatsOverview -->
+    <section class="py-12 border-b border-border/50">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center animate-float" style="animation-delay: 0s;">
+                    <div class="text-3xl md:text-4xl font-bold text-primary mb-2">4</div>
+                    <div class="text-muted-foreground">Active Partners</div>
+                </div>
+                <div class="text-center animate-float" style="animation-delay: 0.5s;">
+                    <div class="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">36</div>
+                    <div class="text-muted-foreground">Total Winners</div>
+                </div>
+                <div class="text-center animate-float" style="animation-delay: 1s;">
+                    <div class="text-3xl md:text-4xl font-bold text-yellow-400 mb-2 prize-glow">$3,500+</div>
+                    <div class="text-muted-foreground">Total Prizes</div>
+                </div>
+                <div class="text-center animate-float" style="animation-delay: 1.5s;">
+                    <div class="text-3xl md:text-4xl font-bold text-red-400 mb-2">24/7</div>
+                    <div class="text-muted-foreground">Live Competition</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: StatsOverview -->
+
+    <!-- @COMPONENT: LeaderboardGrid -->
+    <main class="py-16">
+        <div class="container mx-auto px-4">
+            <!-- @MAP: partners.map(partner => ( -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                
+                <!-- Roobet Card -->
+                <article class="group relative bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-primary/50 card-hover glow-effect animate-slide-up" style="animation-delay: 0s;" data-mock="true">
+                    <!-- Partnered Badge -->
+                    <div class="absolute top-4 left-4 z-20">
+                        <span class="inline-flex items-center px-3 py-1 bg-gradient-to-r from-primary to-purple-600 text-xs font-semibold text-primary-foreground rounded-full">
+                            <i class="fas fa-star mr-1"></i>PARTNERED
+                        </span>
+                    </div>
+
+                    <!-- Card Content -->
+                    <div class="p-8">
+                        <!-- Logo and Title -->
+                        <div class="flex items-center mb-6">
+                            <!-- Gaming platform logo placeholder - bright colorful gaming site logo -->
+                            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&h=128" 
+                                 alt="Roobet logo" 
+                                 class="w-16 h-16 rounded-xl mr-4 border-2 border-border group-hover:border-primary/50 transition-colors duration-300" 
+                                 data-mock-image="true" 
+                                 data-implementation="Use actual Roobet logo" />
+                            <div>
+                                <h3 class="text-2xl font-bold text-foreground mb-1" data-bind="partner.name">Roobet</h3>
+                                <div class="flex items-center text-sm text-muted-foreground">
+                                    <i class="fas fa-users mr-2"></i>
+                                    <span data-bind="partner.activeUsers">2,547 active players</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-muted-foreground mb-6 text-lg" data-bind="partner.description">
+                            Compete in Roobet Leaderboard and win exclusive rewards
+                        </p>
+
+                        <!-- Stats Grid -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-secondary/50 rounded-lg p-4 border border-border/50">
+                                <div class="text-sm text-muted-foreground mb-1">Winners</div>
+                                <div class="text-2xl font-bold text-emerald-400" data-bind="partner.winners">10</div>
+                            </div>
+                            <div class="bg-secondary/50 rounded-lg p-4 border border-border/50">
+                                <div class="text-sm text-muted-foreground mb-1">Prize Pool</div>
+                                <div class="text-2xl font-bold text-yellow-400 prize-glow" data-bind="partner.prizePool">$1,000</div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button class="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-primary-foreground font-semibold py-4 px-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 group-hover:animate-glow" 
+                                data-event="click:viewLeaderboard" 
+                                data-implementation="Navigate to /leaderboards/roobet">
+                            <i class="fas fa-trophy mr-2"></i>View Leaderboard
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Packdraw Card -->
+                <article class="group relative bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-emerald-400/50 card-hover glow-effect animate-slide-up" style="animation-delay: 0.2s;" data-mock="true">
+                    <!-- Partnered Badge -->
+                    <div class="absolute top-4 left-4 z-20">
+                        <span class="inline-flex items-center px-3 py-1 bg-gradient-to-r from-emerald-500 to-cyan-500 text-xs font-semibold text-white rounded-full">
+                            <i class="fas fa-star mr-1"></i>PARTNERED
+                        </span>
+                    </div>
+
+                    <!-- Card Content -->
+                    <div class="p-8">
+                        <!-- Logo and Title -->
+                        <div class="flex items-center mb-6">
+                            <!-- Gaming case opening site logo placeholder -->
+                            <img src="https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&h=128" 
+                                 alt="Packdraw logo" 
+                                 class="w-16 h-16 rounded-xl mr-4 border-2 border-border group-hover:border-emerald-400/50 transition-colors duration-300" 
+                                 data-mock-image="true" 
+                                 data-implementation="Use actual Packdraw logo" />
+                            <div>
+                                <h3 class="text-2xl font-bold text-foreground mb-1" data-bind="partner.name">Packdraw</h3>
+                                <div class="flex items-center text-sm text-muted-foreground">
+                                    <i class="fas fa-users mr-2"></i>
+                                    <span data-bind="partner.activeUsers">1,892 active players</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-muted-foreground mb-6 text-lg" data-bind="partner.description">
+                            Compete in Packdraw Leaderboard and win exclusive rewards
+                        </p>
+
+                        <!-- Stats Grid -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-secondary/50 rounded-lg p-4 border border-border/50">
+                                <div class="text-sm text-muted-foreground mb-1">Winners</div>
+                                <div class="text-2xl font-bold text-emerald-400" data-bind="partner.winners">8</div>
+                            </div>
+                            <div class="bg-secondary/50 rounded-lg p-4 border border-border/50">
+                                <div class="text-sm text-muted-foreground mb-1">Prize Pool</div>
+                                <div class="text-2xl font-bold text-yellow-400 prize-glow" data-bind="partner.prizePool">$1,500</div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button class="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-500/90 hover:to-cyan-500/90 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-emerald-400/25 group-hover:animate-glow" 
+                                data-event="click:viewLeaderboard" 
+                                data-implementation="Navigate to /leaderboards/packdraw">
+                            <i class="fas fa-trophy mr-2"></i>View Leaderboard
+                        </button>
+                    </div>
+                </article>
+
+                <!-- CSGOGem Card -->
+                <article class="group relative bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-orange-400/50 card-hover glow-effect animate-slide-up" style="animation-delay: 0.4s;" data-mock="true">
+                    <!-- Partnered Badge -->
+                    <div class="absolute top-4 left-4 z-20">
+                        <span class="inline-flex items-center px-3 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-xs font-semibold text-white rounded-full">
+                            <i class="fas fa-star mr-1"></i>PARTNERED
+                        </span>
+                    </div>
+
+                    <!-- Card Content -->
+                    <div class="p-8">
+                        <!-- Logo and Title -->
+                        <div class="flex items-center mb-6">
+                            <!-- CSGO gaming site logo placeholder -->
+                            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&h=128" 
+                                 alt="CSGOGem logo" 
+                                 class="w-16 h-16 rounded-xl mr-4 border-2 border-border group-hover:border-orange-400/50 transition-colors duration-300" 
+                                 data-mock-image="true" 
+                                 data-implementation="Use actual CSGOGem logo" />
+                            <div>
+                                <h3 class="text-2xl font-bold text-foreground mb-1" data-bind="partner.name">CSGOGem</h3>
+                                <div class="flex items-center text-sm text-muted-foreground">
+                                    <i class="fas fa-users mr-2"></i>
+                                    <span data-bind="partner.activeUsers">3,241 active players</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-muted-foreground mb-6 text-lg" data-bind="partner.description">
+                            Compete in CSGOGem Leaderboard and win exclusive rewards
+                        </p>
+
+                        <!-- Stats Grid -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-secondary/50 rounded-lg p-4 border border-border/50">
+                                <div class="text-sm text-muted-foreground mb-1">Winners</div>
+                                <div class="text-2xl font-bold text-emerald-400" data-bind="partner.winners">8</div>
+                            </div>
+                            <div class="bg-secondary/50 rounded-lg p-4 border border-border/50">
+                                <div class="text-sm text-muted-foreground mb-1">Prize Pool</div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-gem text-orange-400 mr-2"></i>
+                                    <span class="text-2xl font-bold text-yellow-400 prize-glow" data-bind="partner.prizePool">1,000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-500/90 hover:to-red-500/90 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-orange-400/25 group-hover:animate-glow" 
+                                data-event="click:viewLeaderboard" 
+                                data-implementation="Navigate to /leaderboards/csgogem">
+                            <i class="fas fa-trophy mr-2"></i>View Leaderboard
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Chicken.gg Card -->
+                <article class="group relative bg-card border border-border rounded-xl overflow-hidden transition-all duration-300 hover:border-yellow-400/50 card-hover glow-effect animate-slide-up" style="animation-delay: 0.6s;" data-mock="true">
+                    <!-- Partnered Badge -->
+                    <div class="absolute top-4 left-4 z-20">
+                        <span class="inline-flex items-center px-3 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-xs font-semibold text-white rounded-full">
+                            <i class="fas fa-star mr-1"></i>PARTNERED
+                        </span>
+                    </div>
+
+                    <!-- Card Content -->
+                    <div class="p-8">
+                        <!-- Logo and Title -->
+                        <div class="flex items-center mb-6">
+                            <!-- Gaming chicken themed logo placeholder -->
+                            <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&h=128" 
+                                 alt="Chicken.gg logo" 
+                                 class="w-16 h-16 rounded-xl mr-4 border-2 border-border group-hover:border-yellow-400/50 transition-colors duration-300" 
+                                 data-mock-image="true" 
+                                 data-implementation="Use actual Chicken.gg logo" />
+                            <div>
+                                <h3 class="text-2xl font-bold text-foreground mb-1" data-bind="partner.name">Chicken.gg</h3>
+                                <div class="flex items-center text-sm text-muted-foreground">
+                                    <i class="fas fa-users mr-2"></i>
+                                    <span data-bind="partner.activeUsers">1,645 active players</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-muted-foreground mb-6 text-lg" data-bind="partner.description">
+                            Compete in Chicken.gg Leaderboard and win exclusive rewards
+                        </p>
+
+                        <!-- Stats Grid -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-secondary/50 rounded-lg p-4 border border-border/50">
+                                <div class="text-sm text-muted-foreground mb-1">Winners</div>
+                                <div class="text-2xl font-bold text-emerald-400" data-bind="partner.winners">10</div>
+                            </div>
+                            <div class="bg-secondary/50 rounded-lg p-4 border border-border/50">
+                                <div class="text-sm text-muted-foreground mb-1">Prize Pool</div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-coins text-yellow-400 mr-2"></i>
+                                    <span class="text-2xl font-bold text-yellow-400 prize-glow" data-bind="partner.prizePool">2,000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button class="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-500/90 hover:to-orange-500/90 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/25 group-hover:animate-glow" 
+                                data-event="click:viewLeaderboard" 
+                                data-implementation="Navigate to /leaderboards/chickengg">
+                            <i class="fas fa-trophy mr-2"></i>View Leaderboard
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+            <!-- @END_MAP -->
+        </div>
+    </main>
+    <!-- @END_COMPONENT: LeaderboardGrid -->
+
+    <!-- @COMPONENT: Footer -->
+    <footer class="border-t border-border/50 py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent">
+                    Ready to Compete?
+                </h3>
+                <p class="text-muted-foreground max-w-2xl mx-auto">
+                    Join thousands of players competing for amazing prizes. Choose your platform and start climbing the leaderboards today!
+                </p>
+            </div>
+            
+            <div class="flex justify-center items-center space-x-6 mb-8">
+                <a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-300">
+                    <i class="fab fa-discord text-2xl"></i>
+                </a>
+                <a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-300">
+                    <i class="fab fa-twitter text-2xl"></i>
+                </a>
+                <a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-300">
+                    <i class="fab fa-youtube text-2xl"></i>
+                </a>
+                <a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-300">
+                    <i class="fab fa-twitch text-2xl"></i>
+                </a>
+            </div>
+            
+            <div class="text-sm text-muted-foreground">
+                <p>&copy; 2024 CK97Leaderboards. All rights reserved.</p>
+                <p class="mt-2">Compete responsibly. Must be 18+ to participate.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        // TODO: Implement React state management and component logic
+        // TODO: Add real-time leaderboard updates via WebSocket connection
+        // TODO: Implement user authentication and profile management
+        // TODO: Add partner-specific routing and deep linking
+        
+        (function() {
+            // Initialize smooth scrolling animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all animated elements
+            document.querySelectorAll('[class*="animate-"]').forEach(el => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+
+            // Add click handlers for leaderboard cards
+            document.querySelectorAll('[data-event*="viewLeaderboard"]').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // TODO: Implement navigation to specific leaderboard
+                    console.log('Navigate to leaderboard:', this.dataset.implementation);
+                });
+            });
+
+            // Add hover effects for enhanced interactivity
+            document.querySelectorAll('.card-hover').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '10';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.zIndex = '1';
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
